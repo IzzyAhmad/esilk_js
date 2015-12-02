@@ -1,51 +1,61 @@
-var landingState = {
+Esilk.landingState = function (game){};
 
+Esilk.landingState.prototype = {
 	create: function(){
-		//alert(game.world.width/2
+		game.add.sprite(0,0,'gamebg');
+		
+		cara = game.add.sprite(-100, 440, 'vehicleleft');
+		cara.scale.setTo(1.7, 1.7);
+		carb = game.add.sprite(game.world.width + 200, 370, 'vehicleright');
+		carb.scale.setTo(1.7, 1.7);
 
-			game.add.sprite(0,0, 'landingbg');
+		press = game.add.button(game.world.width/2, game.world.height-150, 'pressstart', this.playgame);
+		press.scale.setTo(0.9, 0.9);
+		press.anchor.x=0.5;
 
-			//this.menudeco = game.add.sprite(0, 200, 'menudeco');
-
-
-			this.logo = game.add.sprite(-90,0, 'title');
-			//this.logo.anchor.x = 0.5;
-			this.logo.scale.setTo(0.7, 0.7);
-
-			//this.tap = game.add.sprite(game.world.width/2, game.world.height - 150, 'start');
-			//this.tap.anchor.x = 0.5;
-			
-			this.crossing = game.add.sprite(game.world.width - 300,240,'crossing');
-			this.crossing.scale.setTo(0.1,0.1);
-
-			this.bus = game.add.sprite(game.world.width,game.world.height - 180, 'bus');
-			this.bus.scale.setTo(0.2,0.2);
-			
-			this.player = game.add.sprite(game.world.width - 250,game.world.height - 110,'player');
-			this.player.scale.setTo(0.12,0.12);
-			
-			this.button = game.add.button(game.world.width/2, game.world.height - 90, 'start', this.start, this);
-			this.button.anchor.x = 0.5;
-			this.button.scale.setTo(0.5, 0.5);
+		logo = game.add.sprite(0,50, 'esilklogo');
+		logo.scale.setTo(0.8, 0.8);
 
 
-		//var nameLabel = game.add.text(80, 80,'My first game', {font: '25px Arial', fill: '#fff'});
-		//var startLabel = game.add.text(80, game.world.height-80, 'Press the "W" key to start', {font: '25px Arial', fill: '#fff'});
+		game.add.sprite(0,0,'overlay');
+		
+      	//  We need to enable physics on the car
+      	game.physics.arcade.enable(cara);
+      	game.physics.arcade.enable(carb);
 
-		var wKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
+  		//  car physics properties. Give the little guy a slight bounce.
+    	//car.body.bounce.y = 0.2;
+    	//car.body.gravity.y = 300;
+    	//car.body.collideWorldBounds = true;
 
-		wKey.onDown.addOnce(this.start, this);
-	},
+    	//  Our two animations, walking left and right.
+    	cara.animations.add('moveleft', [0,12], 10, true);
+    	carb.animations.add('moveright', [8,20], 10, true);
 
-	update: function(){
-		this.bus.x -= 1;
 
-		if (this.bus.x < -150){
-			this.bus.x = game.world.width;
-		}
-	},
+        //  Reset the cars velocity (movement)
+        //car.body.velocity.x = 0;
+    },
 
-	start: function(){
-		game.state.start('menu');
-	},
-}
+    update: function(){
+    	cara.body.velocity.x =50;
+
+    	cara.animations.play('moveleft');
+
+    	if (cara.x > game.world.width+20){
+    		cara.x = -100;
+    	}
+
+    	carb.body.velocity.x = -50;
+
+    	carb.animations.play('moveright');
+
+    	if (carb.x < -100){
+    		carb.x = game.world.width+200;
+    	}
+    },
+
+    playgame: function(){
+    	game.state.start('mainmenu');
+    },
+};
