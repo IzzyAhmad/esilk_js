@@ -2,12 +2,18 @@ Esilk.mainmenuState = function (game){};
 
 Esilk.mainmenuState.prototype = {
 	create: function(){
+
+		game.world.setBounds(0, 0, 1024, 600);
 		game.add.sprite(0,0,'menubg');
 
 		logo = game.add.sprite(30,50, 'menutit');
 		logo.scale.setTo(0.8, 0.8);
 
-		play = game.add.button(200,game.world.height/2,'playbut');
+		log = game.add.button(game.world.width-100,50,'loginwoi', this.logun);
+		log.scale.setTo(0.7, 0.7);
+		log.anchor.x= 0.5;
+
+		play = game.add.button(200,game.world.height/2,'playbut', this.plih);
 		play.scale.setTo(0.7, 0.7);
 		play.anchor.x= 0.5;
 
@@ -43,12 +49,14 @@ Esilk.mainmenuState.prototype = {
 		title = game.add.button(game.world.width/2,game.world.height/2 + 100 +160,'morebuttit');
 		title.anchor.x= 0.5;
 
-		setting = game.add.button(game.world.width-200,game.world.height/2+160,'settingbut');
+		setting = game.add.button(game.world.width-200,game.world.height/2+160,'settingbut', this.setwoi);
 		setting.scale.setTo(0.7, 0.7);
 		setting.anchor.x= 0.5;
 
 		title = game.add.button(game.world.width-200,game.world.height/2 + 100 +160,'settingbuttit');
 		title.anchor.x= 0.5;
+
+		tarafic.stop();
 	},
 
 	game: function(){
@@ -65,5 +73,19 @@ Esilk.mainmenuState.prototype = {
 
 	bod: function(){
 		game.state.start('leader');
-	}
+	},
+
+	plih: function(){
+		game.state.start('sellevel');
+	},
+
+	logun: function(){
+		var pemain = prompt("Please enter your name", "Player");
+
+		localStorage.setItem("pemain", pemain);
+	},
+
+	setwoi: function(){
+		game.state.start('setup');	
+	},
 };
